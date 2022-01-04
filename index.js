@@ -1,10 +1,10 @@
+import cluster from "cluster";
 import mysql from "mysql2/promise";
 
 // TODO: adjust these connection details to match your SingleStore deployment:
-const HOST = "localhost";
-const PORT = "3306";
-const USER = "root";
-const PASSWORD = "root";
+const HOST = "PASTE YOUR SINGLESTORE ADMIN ENDPOINT HERE";
+const USER = "admin";
+const PASSWORD = "PASTE YOUR PASSWORD HERE";
 const DATABASE = "app";
 
 function randomNumberBetween(min, max) {
@@ -103,3 +103,30 @@ export default async function singleStorePerformanceTest(numberOfRequests) {
     }
   }
 }
+
+async function main() {
+  if (cluster.isPrimary) {
+    cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+    // cluster.fork();
+  } else {
+    try {
+      const numberOfRequests = 7000;
+      await singleStorePerformanceTest(numberOfRequests);
+      // console.log("SingleStore performance test complete.");
+
+      process.exit(1);
+    } catch (err) {
+      console.error("ERROR", err);
+      process.exit(1);
+    }
+  }
+}
+
+main();
