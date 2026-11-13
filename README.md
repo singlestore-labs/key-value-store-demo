@@ -38,6 +38,7 @@ In `index.js` be sure to change the connection details at the top of the file to
 
 // TODO: adjust these connection details to match your SingleStore deployment:
 const HOST = 'PASTE YOUR SINGLESTORE ADMIN ENDPOINT HERE';
+const PORT = 3306;
 const USER = 'admin';
 const PASSWORD = 'PASTE YOUR PASSWORD HERE';
 const DATABASE = "app";

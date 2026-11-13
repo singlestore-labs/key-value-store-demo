@@ -3,6 +3,7 @@ import mysql from "mysql2/promise";
 
 // TODO: adjust these connection details to match your SingleStore deployment:
 const HOST = "PASTE YOUR SINGLESTORE ADMIN ENDPOINT HERE";
+const PORT = 3306;
 const USER = "admin";
 const PASSWORD = "PASTE YOUR PASSWORD HERE";
 const DATABASE = "app";
@@ -22,7 +23,9 @@ async function create({ conn, data }) {
       data.value,
     ]);
     return results.insertId;
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function readOne({ conn, id }) {
@@ -32,14 +35,18 @@ async function readOne({ conn, id }) {
       [id]
     );
     return rows[0];
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function deleteAll({ conn }) {
   try {
     const [rows] = await conn.execute("DELETE FROM data");
     return rows;
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function singleStoreInsertionPerfTest({ conn, numberOfRequests }) {
@@ -57,7 +64,9 @@ async function singleStoreInsertionPerfTest({ conn, numberOfRequests }) {
       `SingleStore took ${end - start}ms to insert ${numberOfRequests} rows.`
     );
     return end - start;
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function singleStoreReadPerfTest({ conn, numberOfRequests }) {
@@ -75,7 +84,9 @@ async function singleStoreReadPerfTest({ conn, numberOfRequests }) {
       `SingleStore took ${end - start}ms to read ${numberOfRequests} rows.`
     );
     return end - start;
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default async function singleStorePerformanceTest(numberOfRequests) {
@@ -97,6 +108,7 @@ export default async function singleStorePerformanceTest(numberOfRequests) {
     await singleStoreInsertionPerfTest({ conn, numberOfRequests });
     await singleStoreReadPerfTest({ conn, numberOfRequests });
   } catch (err) {
+    console.error(err);
   } finally {
     if (conn) {
       await conn.end();
@@ -121,7 +133,7 @@ async function main() {
       await singleStorePerformanceTest(numberOfRequests);
       // console.log("SingleStore performance test complete.");
 
-      process.exit(1);
+      process.exit(0);
     } catch (err) {
       console.error("ERROR", err);
       process.exit(1);

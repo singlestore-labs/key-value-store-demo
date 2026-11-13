@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/singlestore-labs/key-value-store-demo#readme",
   "dependencies": {
-    "mysql2": "^2.3.3"
-  },
-  "devDependencies": {}
+    "mysql2": "^3.24.6"
+  }
 }
